@@ -1,6 +1,10 @@
 # Uno WP Form reCAPTCHA
 
 <p align="center">
+  <!-- License -->
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/annrie/uno-wp-form-recaptcha.svg" alt="License">
+  </a>
   <!-- Stars -->
   <a href="https://github.com/annrie/uno-wp-form-recaptcha/stargazers">
     <img src="https://img.shields.io/github/stars/annrie/uno-wp-form-recaptcha.svg" alt="Stars">
