@@ -1,5 +1,16 @@
 # Uno WP Form reCAPTCHA
 
+<p align="center">
+  <!-- Stars -->
+  <a href="https://github.com/annrie/uno-wp-form-recaptcha/stargazers">
+    <img src="https://img.shields.io/github/stars/annrie/uno-wp-form-recaptcha.svg" alt="Stars">
+  </a>
+  <!-- Last commit -->
+  <a href="https://github.com/annrie/uno-wp-form-recaptcha/commits">
+    <img src="https://img.shields.io/github/last-commit/annrie/uno-wp-form-recaptcha.svg" alt="Last commit">
+  </a>
+</p>
+
 Uno WP Form reCAPTCHA adds Google reCAPTCHA with server-side verification and a honeypot field to Uno WP Form.
 
 Uno WP Form reCAPTCHA は、Uno WP Form に Google reCAPTCHA（サーバー側検証つき）とハニーポットフィールドを追加するプラグインです。
