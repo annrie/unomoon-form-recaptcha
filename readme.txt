@@ -1,25 +1,25 @@
-=== Uno WP Form reCAPTCHA ===
-Tags: Uno WP Form, reCAPTCHA, contact form, spam protection
+=== Unomoon Form reCAPTCHA ===
+Tags: Unomoon Form, reCAPTCHA, contact form, spam protection
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.1.0
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Adds Google reCAPTCHA with server-side verification and a honeypot field to Uno WP Form.
+Adds Google reCAPTCHA with server-side verification and a honeypot field to Unomoon Form.
 
-Uno WP Form に Google reCAPTCHA（サーバー側検証つき）とハニーポットフィールドを追加します。
+Unomoon Form に Google reCAPTCHA（サーバー側検証つき）とハニーポットフィールドを追加します。
 
 == Description ==
 
-Uno WP Form reCAPTCHA inserts Google reCAPTCHA before the submit button on Uno WP Form input screens.
+Unomoon Form reCAPTCHA inserts Google reCAPTCHA before the submit button on Unomoon Form input screens.
 
-Uno WP Form reCAPTCHA は、Uno WP Form の入力画面で送信ボタンの前に Google reCAPTCHA を表示します。
+Unomoon Form reCAPTCHA は、Unomoon Form の入力画面で送信ボタンの前に Google reCAPTCHA を表示します。
 
-This plugin requires Uno WP Form.
+This plugin requires Unomoon Form.
 
-このプラグインを利用するには Uno WP Form が必要です。
+このプラグインを利用するには Unomoon Form が必要です。
 
 The plugin renders Google reCAPTCHA using a Site key and disables the submit button until the reCAPTCHA challenge is completed.
 
@@ -29,45 +29,45 @@ When a Secret key is configured, the plugin verifies the reCAPTCHA response on t
 
 Secret key を設定すると、入力→確認の遷移時に Google の `siteverify` API でサーバー側検証を行い、確認→送信の遷移時には検証済みセッションフラグを必須とします。これにより、JavaScript を実行しない bot や送信ステップへ直接 POST する bot を遮断します。
 
-The plugin also injects a visually hidden honeypot field into every Uno WP Form and rejects submissions that fill it in. The honeypot works even without reCAPTCHA keys.
+The plugin also injects a visually hidden honeypot field into every Unomoon Form and rejects submissions that fill it in. The honeypot works even without reCAPTCHA keys.
 
-また、すべての Uno WP Form に視覚的に隠されたハニーポットフィールドを挿入し、これを埋めた送信を拒否します。ハニーポットは reCAPTCHA キー未設定でも動作します。
+また、すべての Unomoon Form に視覚的に隠されたハニーポットフィールドを挿入し、これを埋めた送信を拒否します。ハニーポットは reCAPTCHA キー未設定でも動作します。
 
 == Installation ==
 
-1. Upload the `uno-wp-form-recaptcha` folder to the `/wp-content/plugins/` directory.
+1. Upload the `unomoon-form-recaptcha` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the WordPress Plugins screen.
-3. Make sure Uno WP Form is installed and active.
-4. Open `Uno WP Form reCAPTCHA` from the admin menu.
+3. Make sure Unomoon Form is installed and active.
+4. Open `Unomoon Form reCAPTCHA` from the admin menu.
 5. Enter the Site key and Secret key from the Google reCAPTCHA admin console.
 6. Save changes.
 
 インストール:
 
-1. `uno-wp-form-recaptcha` フォルダを `/wp-content/plugins/` ディレクトリへアップロードします。
+1. `unomoon-form-recaptcha` フォルダを `/wp-content/plugins/` ディレクトリへアップロードします。
 2. WordPress管理画面の「プラグイン」から有効化します。
-3. Uno WP Form がインストールされ、有効化されていることを確認します。
-4. 管理メニューから `Uno WP Form reCAPTCHA` を開きます。
+3. Unomoon Form がインストールされ、有効化されていることを確認します。
+4. 管理メニューから `Unomoon Form reCAPTCHA` を開きます。
 5. Google reCAPTCHA 管理画面で取得した Site key と Secret key を入力します。
 6. 変更を保存します。
 
 == Frequently Asked Questions ==
 
-= Does this plugin require Uno WP Form? =
+= Does this plugin require Unomoon Form? =
 
-Yes. This plugin is designed for Uno WP Form and targets Uno WP Form's frontend classes.
+Yes. This plugin is designed for Unomoon Form and targets Unomoon Form's frontend classes.
 
-= Uno WP Form は必要ですか？ =
+= Unomoon Form は必要ですか？ =
 
-はい。このプラグインは Uno WP Form 用で、Uno WP Form のフロントエンドクラスを対象にしています。
+はい。このプラグインは Unomoon Form 用で、Unomoon Form のフロントエンドクラスを対象にしています。
 
 = Where do I enter the Site key? =
 
-Open `Uno WP Form reCAPTCHA` in the WordPress admin menu and paste the Site key into the Site key field.
+Open `Unomoon Form reCAPTCHA` in the WordPress admin menu and paste the Site key into the Site key field.
 
 = Site key はどこに入力しますか？ =
 
-WordPress管理画面の `Uno WP Form reCAPTCHA` を開き、Site key フィールドに貼り付けます。
+WordPress管理画面の `Unomoon Form reCAPTCHA` を開き、Site key フィールドに貼り付けます。
 
 = Does this plugin use the Secret key? =
 
@@ -97,10 +97,14 @@ Yes. Add `localhost` to the allowed domains for your reCAPTCHA key in the Google
 
 == Changelog ==
 
+= 2.0.0 =
+* Breaking: renamed from "Uno WP Form reCAPTCHA" to "Unomoon Form reCAPTCHA" following the rename of the main plugin. Requires Unomoon Form 5.1.6.2 or later; option names moved to `unomoon-form-recaptcha-*` (migrated by the main plugin's `tools/migrate-from-uno-wp-form.php`).
+* Removed bundled translation files and `load_plugin_textdomain()`; translations load from `wp-content/languages/plugins/`.
+
 = 1.1.0 =
 * Add: server-side verification of the reCAPTCHA response via Google's `siteverify` API (Secret key setting added).
 * Add: session-flag check on the confirm-to-complete transition to block bots that post directly to the completion step.
-* Add: visually hidden honeypot field injected into every Uno WP Form, validated on the server.
+* Add: visually hidden honeypot field injected into every Unomoon Form, validated on the server.
 * Add: migrate the Secret key from the legacy `mw-wp-form-recaptcha` add-on when present.
 
 = 1.0.0 =

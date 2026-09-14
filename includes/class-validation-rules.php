@@ -1,11 +1,11 @@
 <?php
 /**
- * Server-side validation rules for Uno WP Form reCAPTCHA.
+ * Server-side validation rules for Unomoon Form reCAPTCHA.
  *
- * Loaded on `init` only when uno-wp-form is active
- * (Uno_WP_Form_Abstract_Validation_Rule exists).
+ * Loaded on `init` only when unomoon-form is active
+ * (Unomoon_Form_Abstract_Validation_Rule exists).
  *
- * @package uno-wp-form-recaptcha
+ * @package unomoon-form-recaptcha
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,12 +16,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * reCAPTCHA server-side verification rule.
  *
  * - input -> confirm: verifies g-recaptcha-response via siteverify and
- *   stores a verified flag in the uno-wp-form session.
+ *   stores a verified flag in the unomoon-form session.
  * - confirm -> complete: requires the session flag (the confirm page has
  *   no widget, and bots POSTing directly to complete never obtain the flag).
  *   Falls back to verifying a POSTed token for forms without a confirm step.
  */
-class Uno_WP_Form_Recaptcha_Validation_Rule extends Uno_WP_Form_Abstract_Validation_Rule {
+class Unomoon_Form_Recaptcha_Validation_Rule extends Unomoon_Form_Abstract_Validation_Rule {
 
 	/**
 	 * Validation rule name.
@@ -41,18 +41,18 @@ class Uno_WP_Form_Recaptcha_Validation_Rule extends Uno_WP_Form_Abstract_Validat
 	 * @return string|null Error message on failure.
 	 */
 	public function rule( $name, array $options = array() ) {
-		$secret = (string) get_option( UNO_WP_FORM_RECAPTCHA_OPTION_SECRETKEY, '' );
+		$secret = (string) get_option( UNOMOON_FORM_RECAPTCHA_OPTION_SECRETKEY, '' );
 		if ( '' === $secret ) {
 			return null;
 		}
 
 		$defaults = array(
-			'message' => __( 'reCAPTCHA verification failed. Please try again.', UNO_WP_FORM_RECAPTCHA_TEXTDOMAIN ),
+			'message' => __( 'reCAPTCHA verification failed. Please try again.', UNOMOON_FORM_RECAPTCHA_TEXTDOMAIN ),
 		);
 		$options  = array_merge( $defaults, $options );
 
 		$condition = $this->Data->get_post_condition();
-		$session   = new Uno_WP_Form_Session( self::SESSION_NAME );
+		$session   = new Unomoon_Form_Session( self::SESSION_NAME );
 
 		if ( 'confirm' === $condition ) {
 			$verified = $this->_verify_posted_token( $secret );
@@ -91,7 +91,7 @@ class Uno_WP_Form_Recaptcha_Validation_Rule extends Uno_WP_Form_Abstract_Validat
 	 *                   null when Google is unreachable (fail-open, logged).
 	 */
 	private function _verify_posted_token( $secret ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- uno-wp-form validates its own CSRF token.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- unomoon-form validates its own CSRF token.
 		$token = isset( $_POST['g-recaptcha-response'] )
 			? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) )
 			: '';
@@ -113,7 +113,7 @@ class Uno_WP_Form_Recaptcha_Validation_Rule extends Uno_WP_Form_Abstract_Validat
 		);
 
 		if ( is_wp_error( $response ) ) {
-			error_log( 'uno-wp-form-recaptcha: siteverify request failed: ' . $response->get_error_message() );
+			error_log( 'unomoon-form-recaptcha: siteverify request failed: ' . $response->get_error_message() );
 			return null;
 		}
 
@@ -138,9 +138,9 @@ class Uno_WP_Form_Recaptcha_Validation_Rule extends Uno_WP_Form_Abstract_Validat
 
 /**
  * Honeypot rule: rejects the submission when the visually hidden
- * field injected via `unoform_form_end_html` has been filled in.
+ * field injected via `unomoonform_form_end_html` has been filled in.
  */
-class Uno_WP_Form_Recaptcha_Honeypot_Rule extends Uno_WP_Form_Abstract_Validation_Rule {
+class Unomoon_Form_Recaptcha_Honeypot_Rule extends Unomoon_Form_Abstract_Validation_Rule {
 
 	/**
 	 * Validation rule name.
@@ -158,7 +158,7 @@ class Uno_WP_Form_Recaptcha_Honeypot_Rule extends Uno_WP_Form_Abstract_Validatio
 	 */
 	public function rule( $name, array $options = array() ) {
 		$defaults = array(
-			'message' => __( 'The contents which you input were judged with spam.', UNO_WP_FORM_RECAPTCHA_TEXTDOMAIN ),
+			'message' => __( 'The contents which you input were judged with spam.', UNOMOON_FORM_RECAPTCHA_TEXTDOMAIN ),
 		);
 		$options  = array_merge( $defaults, $options );
 
