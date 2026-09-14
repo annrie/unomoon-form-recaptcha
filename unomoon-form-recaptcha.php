@@ -9,7 +9,6 @@
  * Author: annrie
  * Author URI: https://phantomoon.com
  * Text Domain: unomoon-form-recaptcha
- * Domain Path: /languages
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -28,15 +27,9 @@ const UNOMOON_FORM_RECAPTCHA_TEXTDOMAIN       = 'unomoon-form-recaptcha';
 const UNOMOON_FORM_RECAPTCHA_HONEYPOT_FIELD   = 'unomoonform-recaptcha-hp';
 
 /**
- * Load translations and migrate legacy settings once.
+ * Migrate legacy settings once.
  */
 function unomoon_form_recaptcha_init() {
-	load_plugin_textdomain(
-		UNOMOON_FORM_RECAPTCHA_TEXTDOMAIN,
-		false,
-		dirname( plugin_basename( __FILE__ ) ) . '/languages'
-	);
-
 	unomoon_form_recaptcha_migrate_legacy_options();
 }
 add_action( 'plugins_loaded', 'unomoon_form_recaptcha_init' );
