@@ -39,8 +39,23 @@ add_action( 'plugins_loaded', 'unomoon_form_recaptcha_init' );
  */
 function unomoon_form_recaptcha_migrate_legacy_options() {
 	$migrated = (string) get_option( UNOMOON_FORM_RECAPTCHA_OPTION_MIGRATED, '' );
-	if ( '2' === $migrated ) {
+	if ( '3' === $migrated ) {
 		return;
+	}
+
+	// v2.0.0: the add-on was renamed from "Uno WP Form reCAPTCHA"; carry over its options
+	// when the main plugin's migration script has not already renamed them.
+	$renamed_options = array(
+		'sitekey'   => UNOMOON_FORM_RECAPTCHA_OPTION_SITEKEY,
+		'secretkey' => UNOMOON_FORM_RECAPTCHA_OPTION_SECRETKEY,
+		'centering' => UNOMOON_FORM_RECAPTCHA_OPTION_CENTERING,
+	);
+	foreach ( $renamed_options as $suffix => $new_option ) {
+		$previous = get_option( 'uno-wp-form-recaptcha-' . $suffix, null );
+		if ( null !== $previous && '' === (string) get_option( $new_option, '' ) ) {
+			$value = 'centering' === $suffix ? ( '1' === (string) $previous ? '1' : '' ) : sanitize_text_field( (string) $previous );
+			update_option( $new_option, $value );
+		}
 	}
 
 	if ( '' === $migrated ) {
@@ -61,7 +76,7 @@ function unomoon_form_recaptcha_migrate_legacy_options() {
 		update_option( UNOMOON_FORM_RECAPTCHA_OPTION_SECRETKEY, sanitize_text_field( (string) $legacy_secretkey ) );
 	}
 
-	update_option( UNOMOON_FORM_RECAPTCHA_OPTION_MIGRATED, '2' );
+	update_option( UNOMOON_FORM_RECAPTCHA_OPTION_MIGRATED, '3' );
 }
 
 /**
