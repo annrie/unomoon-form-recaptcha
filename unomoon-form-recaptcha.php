@@ -3,7 +3,7 @@
  * Plugin Name: Unomoon Form reCAPTCHA
  * Plugin URI: https://github.com/annrie/unomoon-form-recaptcha
  * Description: Adds a Google reCAPTCHA field with server-side verification and a honeypot field to Unomoon Form.
- * Version: 1.1.0
+ * Version: 2.0.0
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Author: annrie
