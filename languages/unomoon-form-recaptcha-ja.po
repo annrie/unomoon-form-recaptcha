@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Uno WP Form reCAPTCHA\n"
+"Project-Id-Version: Unomoon Form reCAPTCHA\n"
 "POT-Creation-Date: 2026-06-18 00:00+0900\n"
 "PO-Revision-Date: 2026-06-18 00:00+0900\n"
 "Language-Team: annrie\n"
@@ -12,8 +12,8 @@ msgstr ""
 "X-Generator: Codex\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-msgid "Uno WP Form reCAPTCHA"
-msgstr "Uno WP Form reCAPTCHA"
+msgid "Unomoon Form reCAPTCHA"
+msgstr "Unomoon Form reCAPTCHA"
 
 msgid "You do not have permission to access this page."
 msgstr "このページにアクセスする権限がありません。"
