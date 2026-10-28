@@ -25,6 +25,8 @@ const UNOMOON_FORM_RECAPTCHA_OPTION_CENTERING = 'unomoon-form-recaptcha-centerin
 const UNOMOON_FORM_RECAPTCHA_OPTION_MIGRATED  = 'unomoon-form-recaptcha-migrated';
 const UNOMOON_FORM_RECAPTCHA_TEXTDOMAIN       = 'unomoon-form-recaptcha';
 const UNOMOON_FORM_RECAPTCHA_HONEYPOT_FIELD   = 'unomoonform-recaptcha-hp';
+// Plugin-specific handle. "google-recaptcha" is used by other plugins too.
+const UNOMOON_FORM_RECAPTCHA_SCRIPT_HANDLE    = 'unomoon-form-recaptcha-api';
 
 /**
  * Migrate legacy settings once.
@@ -194,15 +196,44 @@ function unomoon_form_recaptcha_enqueue_scripts() {
 		'.unomoonform-recaptcha-hp{position:absolute!important;left:-9999px!important;top:auto!important;width:1px;height:1px;overflow:hidden;}'
 	);
 
-	$sitekey = (string) get_option( UNOMOON_FORM_RECAPTCHA_OPTION_SITEKEY, '' );
-	if ( '' === $sitekey ) {
+	// Register only. The script is enqueued by unomoon_form_recaptcha_enqueue_on_form()
+	// when a form is actually rendered, so pages without a form do not load reCAPTCHA (about 350 KB).
+	if ( ! unomoon_form_recaptcha_register_script() ) {
 		return;
 	}
 
-	wp_enqueue_script(
-		'google-recaptcha',
+	$css = '.g-recaptcha{margin:20px 0 15px;}';
+	if ( '1' === (string) get_option( UNOMOON_FORM_RECAPTCHA_OPTION_CENTERING, '' ) ) {
+		$css .= '.g-recaptcha>div{margin:0 auto;}';
+	}
+	wp_add_inline_style( 'unomoon-form-recaptcha', $css );
+}
+add_action( 'wp_enqueue_scripts', 'unomoon_form_recaptcha_enqueue_scripts' );
+
+/**
+ * Register the reCAPTCHA API script and its bootstrap.
+ *
+ * Called from wp_enqueue_scripts and again when a form is rendered, so a form
+ * rendered before wp_enqueue_scripts (e.g. content pre-rendered by another
+ * plugin) still gets the script. Safe to call more than once.
+ *
+ * @return bool True when the script is registered, false when no Site key is set.
+ */
+function unomoon_form_recaptcha_register_script() {
+	if ( wp_script_is( UNOMOON_FORM_RECAPTCHA_SCRIPT_HANDLE, 'registered' ) ) {
+		return true;
+	}
+
+	$sitekey = (string) get_option( UNOMOON_FORM_RECAPTCHA_OPTION_SITEKEY, '' );
+	if ( '' === $sitekey ) {
+		return false;
+	}
+
+	wp_register_script(
+		UNOMOON_FORM_RECAPTCHA_SCRIPT_HANDLE,
 		'https://www.google.com/recaptcha/api.js?onload=unomoonFormRecaptchaOnload&render=explicit',
-		array(),
+		// The inline bootstrap below runs before api.js and uses jQuery.
+		array( 'jquery' ),
 		null,
 		true
 	);
@@ -233,15 +264,38 @@ function unomoon_form_recaptcha_enqueue_scripts() {
 		"})(jQuery);",
 		esc_js( $sitekey )
 	);
-	wp_add_inline_script( 'google-recaptcha', $script, 'before' );
+	wp_add_inline_script( UNOMOON_FORM_RECAPTCHA_SCRIPT_HANDLE, $script, 'before' );
 
-	$css = '.g-recaptcha{margin:20px 0 15px;}';
-	if ( '1' === (string) get_option( UNOMOON_FORM_RECAPTCHA_OPTION_CENTERING, '' ) ) {
-		$css .= '.g-recaptcha>div{margin:0 auto;}';
-	}
-	wp_add_inline_style( 'unomoon-form-recaptcha', $css );
+	return true;
 }
-add_action( 'wp_enqueue_scripts', 'unomoon_form_recaptcha_enqueue_scripts' );
+
+/**
+ * Enqueue reCAPTCHA when a form is rendered.
+ *
+ * `unomoonform_form_end_html` runs for every Unomoon Form wherever it is placed
+ * (post content, widgets or templates). Normally the script is printed with the
+ * footer scripts. When the form is rendered after the footer scripts were
+ * printed (e.g. from a late wp_footer callback), the script is printed right
+ * after the form instead.
+ *
+ * @param string $html Form end HTML.
+ * @return string
+ */
+function unomoon_form_recaptcha_enqueue_on_form( $html ) {
+	if ( ! unomoon_form_recaptcha_register_script() ) {
+		return $html;
+	}
+
+	if ( ! did_action( 'wp_print_footer_scripts' ) ) {
+		wp_enqueue_script( UNOMOON_FORM_RECAPTCHA_SCRIPT_HANDLE );
+		return $html;
+	}
+
+	ob_start();
+	wp_print_scripts( UNOMOON_FORM_RECAPTCHA_SCRIPT_HANDLE );
+	return $html . ob_get_clean();
+}
+add_filter( 'unomoonform_form_end_html', 'unomoon_form_recaptcha_enqueue_on_form' );
 
 /**
  * Register server-side validation rules once unomoon-form is available.
