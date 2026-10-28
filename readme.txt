@@ -3,7 +3,7 @@ Tags: Unomoon Form, reCAPTCHA, contact form, spam protection
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,12 @@ Yes. Add `localhost` to the allowed domains for your reCAPTCHA key in the Google
 2. Site key 設定画面。
 
 == Changelog ==
+
+= 2.0.1 =
+* Performance: the reCAPTCHA API script (about 350 KB) now loads only on pages where a Unomoon Form is rendered, instead of on every page.
+* Fix: forms rendered before `wp_enqueue_scripts` or after the footer scripts still get reCAPTCHA.
+* Fix: the inline bootstrap now declares its jQuery dependency.
+* Change: the script handle is now `unomoon-form-recaptcha-api` (was `google-recaptcha`, which other plugins also use).
 
 = 2.0.0 =
 * Breaking: renamed from "Uno WP Form reCAPTCHA" to "Unomoon Form reCAPTCHA" following the rename of the main plugin. Requires Unomoon Form 5.1.6.2 or later; option names moved to `unomoon-form-recaptcha-*` (migrated by the main plugin's `tools/migrate-from-uno-wp-form.php`).
