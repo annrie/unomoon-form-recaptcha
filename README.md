@@ -15,51 +15,37 @@
   </a>
 </p>
 
+[English](#english) | [日本語](#日本語)
+
+## English
+
 Unomoon Form reCAPTCHA adds Google reCAPTCHA with server-side verification and a honeypot field to Unomoon Form.
 
-Unomoon Form reCAPTCHA は、Unomoon Form に Google reCAPTCHA（サーバー側検証つき）とハニーポットフィールドを追加するプラグインです。
-
-## Requirements / 動作要件
+### Requirements
 
 - WordPress 6.0 or later
 - Tested up to WordPress 7.0
 - PHP 8.0 or later
-- Unomoon Form
+- [Unomoon Form](https://github.com/annrie/unomoon-form) 5.1.6.2 or later
 
-- WordPress 6.0 以上
-- WordPress 7.0 で検証済み
-- PHP 8.0 以上
-- Unomoon Form
-
-## What This Plugin Does / このプラグインが行うこと
+### What this plugin does
 
 - Displays Google reCAPTCHA before the submit button on Unomoon Form input screens.
 - Disables the submit button until the reCAPTCHA challenge is completed.
 - Reuses an existing manually written `<div class="g-recaptcha">` in the form when present.
 - Inserts a reCAPTCHA container automatically when one is not present.
+- Loads the reCAPTCHA API script only on pages where a Unomoon Form is rendered (since 2.0.1).
 - Verifies the reCAPTCHA response on the server via Google's `siteverify` API when a Secret key is configured (since 1.1.0).
 - Requires the verified session flag on the confirm-to-complete transition, blocking bots that post directly to the completion step (since 1.1.0).
 - Injects a visually hidden honeypot field into every Unomoon Form and rejects submissions that fill it in (since 1.1.0).
 
-- Unomoon Form の入力画面で、送信ボタンの前に Google reCAPTCHA を表示します。
-- reCAPTCHA が完了するまで送信ボタンを無効化します。
-- フォーム内に手書きの `<div class="g-recaptcha">` がある場合は、それを再利用します。
-- 手書きの reCAPTCHA コンテナがない場合は、自動的にコンテナを挿入します。
-- Secret key 設定時は、Google の `siteverify` API でサーバー側検証を行います（1.1.0以降）。
-- 確認→送信の遷移時に検証済みセッションフラグを必須とし、送信ステップへ直接 POST する bot を遮断します（1.1.0以降）。
-- すべての Unomoon Form に視覚的に隠されたハニーポットフィールドを挿入し、これを埋めた送信を拒否します（1.1.0以降）。
-
-## Security Notes / セキュリティ上の注意
+### Security notes
 
 If the Secret key is left empty, server-side verification is skipped and only client-side display, submit-button control and the honeypot are active. Configure both keys for full protection.
 
-Secret key が未設定の場合、サーバー側検証はスキップされ、クライアント側の表示・送信ボタン制御とハニーポットのみが有効になります。完全な保護には両方のキーを設定してください。
-
 If Google's `siteverify` endpoint is unreachable (network error), verification fails open so that legitimate visitors are not locked out; explicit verification failures are rejected.
 
-Google の `siteverify` エンドポイントに到達できない場合（ネットワークエラー）は、正規の訪問者を締め出さないようフェイルオープンで通過させます。検証が明示的に失敗した場合は拒否します。
-
-## Key Setup / キーの設定
+### Key setup
 
 1. Open the Google reCAPTCHA admin console.
 2. Create or select a reCAPTCHA v2 ("I'm not a robot") key.
@@ -69,6 +55,51 @@ Google の `siteverify` エンドポイントに到達できない場合（ネ�
 6. Open `Unomoon Form reCAPTCHA` in the WordPress admin menu.
 7. Paste the Site key and Secret key, then save changes.
 
+### Installation
+
+1. Download `unomoon-form-recaptcha-<version>.zip` from the [Releases page](https://github.com/annrie/unomoon-form-recaptcha/releases/latest) and upload it via **Plugins → Add New Plugin → Upload Plugin**, or unzip it into `/wp-content/plugins/`. Do not use the "Download ZIP" button or the auto-generated "Source code" archives: their top-level directory name does not match the plugin slug.
+2. Activate the plugin from the WordPress Plugins screen.
+3. Make sure Unomoon Form is installed and active.
+4. Configure the Site key and Secret key from the plugin settings screen.
+
+### Related plugin
+
+Unomoon Form: https://github.com/annrie/unomoon-form
+
+### License
+
+GPLv2 or later.
+
+## 日本語
+
+Unomoon Form reCAPTCHA は、Unomoon Form に Google reCAPTCHA（サーバー側検証つき）とハニーポットフィールドを追加するプラグインです。
+
+### 動作要件
+
+- WordPress 6.0 以上
+- WordPress 7.0 で検証済み
+- PHP 8.0 以上
+- [Unomoon Form](https://github.com/annrie/unomoon-form) 5.1.6.2 以上
+
+### このプラグインが行うこと
+
+- Unomoon Form の入力画面で、送信ボタンの前に Google reCAPTCHA を表示します。
+- reCAPTCHA が完了するまで送信ボタンを無効化します。
+- フォーム内に手書きの `<div class="g-recaptcha">` がある場合は、それを再利用します。
+- 手書きの reCAPTCHA コンテナがない場合は、自動的にコンテナを挿入します。
+- reCAPTCHA の API スクリプトは、Unomoon Form を表示するページでだけ読み込みます（2.0.1 以降）。
+- Secret key 設定時は、Google の `siteverify` API でサーバー側検証を行います（1.1.0 以降）。
+- 確認→送信の遷移時に検証済みセッションフラグを必須とし、送信ステップへ直接 POST する bot を遮断します（1.1.0 以降）。
+- すべての Unomoon Form に視覚的に隠されたハニーポットフィールドを挿入し、これを埋めた送信を拒否します（1.1.0 以降）。
+
+### セキュリティ上の注意
+
+Secret key が未設定の場合、サーバー側検証はスキップされ、クライアント側の表示・送信ボタン制御とハニーポットのみが有効になります。完全な保護には両方のキーを設定してください。
+
+Google の `siteverify` エンドポイントに到達できない場合（ネットワークエラー）は、正規の訪問者を締め出さないようフェイルオープンで通過させます。検証が明示的に失敗した場合は拒否します。
+
+### キーの設定
+
 1. Google reCAPTCHA 管理画面を開きます。
 2. reCAPTCHA v2（「私はロボットではありません」）のキーを作成するか、既存のキーを選択します。
 3. 本番ドメインを許可ドメインに追加します。
@@ -77,26 +108,17 @@ Google の `siteverify` エンドポイントに到達できない場合（ネ�
 6. WordPress管理画面の `Unomoon Form reCAPTCHA` を開きます。
 7. Site key と Secret key を貼り付けて保存します。
 
-## Installation / インストール
+### インストール
 
-1. Upload the `unomoon-form-recaptcha` folder to `/wp-content/plugins/`.
-2. Activate the plugin from the WordPress Plugins screen.
-3. Make sure Unomoon Form is installed and active.
-4. Configure the Site key and Secret key from the plugin settings screen.
-
-1. `unomoon-form-recaptcha` フォルダを `/wp-content/plugins/` へアップロードします。
+1. [Releases ページ](https://github.com/annrie/unomoon-form-recaptcha/releases/latest) から `unomoon-form-recaptcha-<version>.zip` をダウンロードし、**プラグイン → 新規プラグインを追加 → プラグインのアップロード** から追加するか、`/wp-content/plugins/` に展開します。GitHub の「Download ZIP」や自動で付く「Source code」は、ディレクトリ名がプラグインのスラッグと一致しないので使わないでください。
 2. WordPress管理画面の「プラグイン」から有効化します。
 3. Unomoon Form がインストールされ、有効化されていることを確認します。
 4. プラグイン設定画面で Site key と Secret key を設定します。
 
-## Related Plugin / 関連プラグイン
+### 関連プラグイン
 
-Unomoon Form:
+Unomoon Form: https://github.com/annrie/unomoon-form
 
-https://github.com/annrie/unomoon-form
-
-## License / ライセンス
-
-GPLv2 or later.
+### ライセンス
 
 GPLv2 以降。
